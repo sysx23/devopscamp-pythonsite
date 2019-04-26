@@ -1,36 +1,52 @@
 ---
 # This will install nagios
 
-- name: install nagios
-  yum: pkg={{ item }} state=present
+- name: enable apache modules
+  apache2_module:
+    name: "{{ item }}"
+    state: present
   with_items:
-   - nagios
-   - nagios-plugins
-   - nagios-plugins-nrpe
-   - nagios-plugins-ping
-   - nagios-plugins-ssh
-   - nagios-plugins-http
-   - nagios-plugins-mysql
-   - nagios-devel
+    - auth_digest
+    - authz_groupfile
+    - cgi
+    - rewrite
+ 
+- name: install nagios deb packages
+  apt:
+    deb: "{{ item }}"
+    state: present
+  with_items: "{{ nagios_deb_pkgs }}"
   notify: restart httpd
 
+- name: install nagios packages from repository
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ nagios_apt_pkgs }}"
+ 
+
 - name: create nagios config dir
-  file: path=/etc/nagios/ansible-managed state=directory
+  file: path=/etc/nagios4/ansible-managed state=directory
 
 - name: configure nagios
-  copy: src=nagios.cfg dest=/etc/nagios/nagios.cfg
+  copy: src=nagios.cfg dest=/etc/nagios4/nagios.cfg
   notify: restart nagios
 
+- name: create objects directory
+  file:
+    name: /etc/nagios4/objects
+    state: directory
+
 - name: configure localhost monitoring
-  copy: src=localhost.cfg dest=/etc/nagios/objects/localhost.cfg
+  copy: src=localhost.cfg dest=/etc/nagios4/objects/localhost.cfg
   notify: restart nagios
 
 - name: configure nagios services
-  copy: src=ansible-managed-services.cfg dest=/etc/nagios/
+  copy: src=ansible-managed-services.cfg dest=/etc/nagios4/
 
 - name: create the nagios object files
   template: src={{ item + ".j2" }}
-            dest=/etc/nagios/ansible-managed/{{ item }}
+            dest=/etc/nagios4/ansible-managed/{{ item }}
   with_items:
     - webservers.cfg
     - dbservers.cfg
@@ -38,4 +54,4 @@
   notify: restart nagios
 
 - name: start nagios
-  service: name=nagios state=started enabled=yes
+  service: name=nagios4 state=started enabled=yes

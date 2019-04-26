@@ -1,0 +1,12 @@
+nagios_deb_pkgs:
+  - http://ftp.ru.debian.org/debian/pool/main/n/nagios4/nagios4-common_4.3.4-3_all.deb
+  - http://ftp.ru.debian.org/debian/pool/main/n/nagios4/nagios4-core_4.3.4-3_amd64.deb
+  - http://ftp.ru.debian.org/debian/pool/main/n/nagios4/nagios4-cgi_4.3.4-3_amd64.deb
+  - http://ftp.ru.debian.org/debian/pool/main/n/nagios4/nagios4_4.3.4-3_amd64.deb
+
+nagios_apt_pkgs:
+  - nagios-nrpe-server
+  - nagios-nrpe-plugin
+  - nagios-plugins-standard
+
+

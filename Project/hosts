@@ -1,12 +1,19 @@
 [webservers]
-web1
-web2
+web1 ansible_host=172.16.0.12
+web2 ansible_host=172.16.0.13
 
 [dbservers]
-db1
+db1 ansible_host=172.16.0.14
 
 [lbservers]
-lb1
+lb1 ansible_host=172.16.0.11
 
 [monitoring]
-nagios
+nagios ansible_host=172.16.0.10
+
+[redis]
+redisdb ansible_host=172.16.0.15
+
+[all:vars]
+ansible_user=ansible
+ansible_become_method=sudo

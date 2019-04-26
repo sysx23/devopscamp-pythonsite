@@ -1,0 +1,19 @@
+---
+
+- name: Install redis
+  package:
+    name: redis-server
+    state: present
+ 
+- name: Configure redis
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis/redis.conf
+    force: yes
+  notify: restart redis
+ 
+- name: Start redis
+  service:
+    name: redis-server
+    enabled: yes
+    state: started

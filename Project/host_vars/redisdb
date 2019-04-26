@@ -1,0 +1,5 @@
+redis:
+    ips:
+      - "{{ ansible_host }}"
+    protected: "yes"
+
